@@ -2,6 +2,8 @@
 
 ## Dubbo反序列化测试工具
 
+## 使用帮助
+
 usage: java -jar exp.jar [OPTION]
 - -h                帮助信息
 - -list             输出所有payload信息
@@ -168,3 +170,7 @@ CommonsCollections8
 3. 参数说明：arg[0]=dns server url
 4. 序列化类型：java
 5. 依赖：java runtime
+
+## 漏洞修复建议
+- 默认缺省的dubbo协议hessian反序列化漏洞：参考 [learnjavabug](https://github.com/threedr3am/learnjavabug)项目module->dubbo/dubbo-hessian2-safe-reinforcement，使用反序列化黑名单形式进行安全加固
+- dubbo版本<2.7.5，http协议反序列化漏洞（CVE-2019-17564）：升级到最新版本2.7.5修复
