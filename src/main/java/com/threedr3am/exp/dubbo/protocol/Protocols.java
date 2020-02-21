@@ -1,12 +1,14 @@
 package com.threedr3am.exp.dubbo.protocol;
 
 import com.threedr3am.exp.dubbo.protocol.dubbo.DubboProtocol;
+import com.threedr3am.exp.dubbo.protocol.http.HttpProtocol;
 
 /**
  * @author threedr3am
  */
 public enum Protocols {
   dubbo("dubbo",new DubboProtocol()),
+  http("http",new HttpProtocol()),
   ;
 
   private String name;

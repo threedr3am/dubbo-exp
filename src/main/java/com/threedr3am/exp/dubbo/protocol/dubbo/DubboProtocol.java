@@ -3,7 +3,9 @@ package com.threedr3am.exp.dubbo.protocol.dubbo;
 import com.threedr3am.exp.dubbo.protocol.Protocol;
 import com.threedr3am.exp.dubbo.serialization.Serialization;
 import java.io.ByteArrayOutputStream;
+import java.util.Map;
 import java.util.Random;
+import org.apache.commons.cli.CommandLine;
 import org.apache.dubbo.common.io.Bytes;
 
 /**
@@ -11,7 +13,7 @@ import org.apache.dubbo.common.io.Bytes;
  */
 public class DubboProtocol implements Protocol {
 
-  public byte[] makeData(byte[] bytes, Serialization serialization) {
+  public byte[] makeData(byte[] bytes, Serialization serialization, Map<String, String> extraData) {
     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
     // header.
@@ -33,6 +35,11 @@ public class DubboProtocol implements Protocol {
     }
 
     return byteArrayOutputStream.toByteArray();
+  }
+
+  @Override
+  public Map<String, String> initExtraData(CommandLine cmd) {
+    return null;
   }
 
 }

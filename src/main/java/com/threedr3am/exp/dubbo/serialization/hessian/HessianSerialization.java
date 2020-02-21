@@ -26,10 +26,7 @@ public class HessianSerialization implements Serialization {
         ((Cleanable) out).cleanup();
       }
 
-      switch (protocol) {
-        case "dubbo":
-          return new DubboProtocol().makeData(hessian2ByteArrayOutputStream.toByteArray(), this);
-      }
+      return hessian2ByteArrayOutputStream.toByteArray();
     } catch (Exception e) {
       e.printStackTrace();
     }

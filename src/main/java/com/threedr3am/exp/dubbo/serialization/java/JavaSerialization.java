@@ -17,11 +17,13 @@ public class JavaSerialization implements Serialization {
 
     try {
       ObjectOutputStream out = new ObjectOutputStream(byteArrayOutputStream);
-      out.writeByte(1);
+      if (protocol.equalsIgnoreCase("dubbo")) {
+        out.writeByte(1);
+      }
       out.writeObject(payload.getPayload(args));
       out.close();
 
-      return choiceProtocol(protocol).makeData(byteArrayOutputStream.toByteArray(), this);
+      return byteArrayOutputStream.toByteArray();
 
     } catch (Exception e) {
       e.printStackTrace();
