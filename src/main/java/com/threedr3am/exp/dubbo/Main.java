@@ -2,8 +2,7 @@ package com.threedr3am.exp.dubbo;
 
 import com.threedr3am.exp.dubbo.payload.Payload;
 import com.threedr3am.exp.dubbo.payload.Payloads;
-import com.threedr3am.exp.dubbo.serialization.hessian.HessianSerialization;
-import com.threedr3am.exp.dubbo.serialization.java.JavaSerialization;
+import com.threedr3am.exp.dubbo.serialization.Serializations;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -78,15 +77,7 @@ public class Main {
       return;
     }
 
-    byte[] bytes = null;
-    switch (s) {
-      case "hessian":
-        bytes = new HessianSerialization().makeData(payload, payloadArgs, protocol);
-        break;
-      case "java":
-        bytes = new JavaSerialization().makeData(payload, payloadArgs, protocol);
-        break;
-    }
+    byte[] bytes = Serializations.getSerialization(s).makeData(payload, payloadArgs, protocol);
 
     String target = cmd.hasOption("t") ? cmd.getOptionValue("t")
         : cmd.getOptionValue("target");
