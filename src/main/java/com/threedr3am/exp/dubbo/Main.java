@@ -22,6 +22,7 @@ public class Main {
   public static void main(String[] args) throws ParseException {
     Options options = new Options()
         .addOption("h", false, "帮助信息")
+        .addOption("help", false, "帮助信息")
         .addOption("t", true, "目标，例：-t 127.0.0.1:20880")
         .addOption("s", true, "[hessian|java] 序列化类型，默认缺省hessian")
         .addOption("protocol", true, "[dubbo|http] 通讯协议名称，默认缺省dubbo")
