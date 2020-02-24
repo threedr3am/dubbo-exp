@@ -10,9 +10,7 @@ import org.apache.xbean.naming.context.ContextUtil.ReadOnlyBinding;
 import org.apache.xbean.naming.context.WritableContext;
 
 /**
- * dubbo 默认配置，即hessian2反序列化，都可RCE
- *
- * 经测试，2.6.3版本可打，其他版本暂未测试，与Spring版本无关了，仅与dubbo版本有关
+ * dubbo 默认配置，即hessian2反序列化，都可RCE（dubbo版本 < 2.7.5）
  *
  * <dependency>
  *   <groupId>org.apache.xbean</groupId>

