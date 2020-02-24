@@ -7,24 +7,31 @@ import com.threedr3am.exp.dubbo.serialization.java.JavaSerialization;
  * @author threedr3am
  */
 public enum Serializations {
-  hessian("hessian",new HessianSerialization()),
-  java("java",new JavaSerialization()),
+  hessian("hessian", HessianSerialization.class),
+  java("java", JavaSerialization.class),
   ;
 
   private String name;
 
-  private Serialization serialization;
+  private Class<? extends Serialization> serialization;
 
   Serializations(String name,
-      Serialization serialization) {
+      Class<? extends Serialization> serialization) {
     this.name = name;
     this.serialization = serialization;
   }
 
   public static Serialization getSerialization(String name) {
     for (Serializations serializations : Serializations.values()) {
-      if (serializations.name.equalsIgnoreCase(name))
-        return serializations.serialization;
+      if (serializations.name.equalsIgnoreCase(name)) {
+        try {
+          return serializations.serialization.newInstance();
+        } catch (InstantiationException e) {
+          e.printStackTrace();
+        } catch (IllegalAccessException e) {
+          e.printStackTrace();
+        }
+      }
     }
     return null;
   }

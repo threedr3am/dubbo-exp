@@ -82,6 +82,7 @@ public class Main {
     }
 
     Serialization serialization = Serializations.getSerialization(s);
+    serialization.setPayload(payload);
     byte[] bytes = serialization.makeData(payload, payloadArgs, protocol);
 
     String target = cmd.getOptionValue("target");

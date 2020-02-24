@@ -12,7 +12,7 @@ import java.util.HashMap;
 /**
  * dubbo 默认配置，即hessian2反序列化，都可RCE（dubbo版本<=2.7.5）
  *
- * Spring和Spring boot环境下都能打
+ * Spring和Spring boot环境下都能打，与Spring版本无关了，仅与dubbo版本有关
  *
  *
  * <dependency>

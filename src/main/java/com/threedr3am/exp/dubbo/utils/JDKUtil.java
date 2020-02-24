@@ -251,7 +251,7 @@ public final class JDKUtil {
         Constructor<?> nodeCons = nodeC.getDeclaredConstructor(int.class, Object.class, Object.class, nodeC);
         nodeCons.setAccessible(true);
 
-        Object tbl = Array.newInstance(nodeC, 3);
+        Object tbl = Array.newInstance(nodeC, 2);
         Array.set(tbl, 0, nodeCons.newInstance(0, v1, v1, null));
         Array.set(tbl, 1, nodeCons.newInstance(0, v2, v2, null));
         Reflections.setFieldValue(s, "table", tbl);

@@ -11,6 +11,8 @@ import org.apache.dubbo.common.serialize.Constants;
  */
 public class JavaSerialization implements Serialization {
 
+  private Payload payload;
+
   @Override
   public byte[] makeData(Payload payload, String[] args, String protocol) {
     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -35,5 +37,15 @@ public class JavaSerialization implements Serialization {
   @Override
   public byte getType() {
     return Constants.JAVA_SERIALIZATION_ID;
+  }
+
+  @Override
+  public void setPayload(Payload payload) {
+    this.payload = payload;
+  }
+
+  @Override
+  public Payload getPayload() {
+    return this.payload;
   }
 }

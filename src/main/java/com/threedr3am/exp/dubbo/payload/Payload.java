@@ -6,4 +6,8 @@ package com.threedr3am.exp.dubbo.payload;
 public interface Payload {
 
   Object getPayload(String[] args) throws Exception;
+
+  default PackageType getPackageType() {
+    return PackageType.EVENT;
+  }
 }

@@ -1,5 +1,7 @@
 package com.threedr3am.exp.dubbo.protocol.dubbo;
 
+import com.threedr3am.exp.dubbo.payload.PackageType;
+import com.threedr3am.exp.dubbo.payload.Payload;
 import com.threedr3am.exp.dubbo.protocol.Protocol;
 import com.threedr3am.exp.dubbo.serialization.Serialization;
 import java.io.ByteArrayOutputStream;
@@ -21,7 +23,13 @@ public class DubboProtocol implements Protocol {
     // set magic number.
     Bytes.short2bytes((short) 0xdabb, header);
     // set request and serialization flag.
-    header[2] = (byte) ((byte) 0x80 | 0x20 | serialization.getType());
+
+    Payload payload = serialization.getPayload();
+    if (payload == null || payload.getPackageType() == PackageType.EVENT) {
+      header[2] = (byte) ((byte) 0x80 | 0x20 | serialization.getType());
+    } else if (payload.getPackageType() == PackageType.INVOKE) {
+      header[2] = (byte) ((byte) 0x80 | serialization.getType());
+    }
 
     // set request id.
     Bytes.long2bytes(new Random().nextInt(100000000), header, 4);

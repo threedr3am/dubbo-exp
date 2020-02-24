@@ -11,4 +11,8 @@ public interface Serialization {
 
   byte getType();
 
+  void setPayload(Payload payload);
+
+  Payload getPayload();
+
 }
