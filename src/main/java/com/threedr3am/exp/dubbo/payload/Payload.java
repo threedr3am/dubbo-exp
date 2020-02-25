@@ -10,4 +10,6 @@ public interface Payload {
   default PackageType getPackageType() {
     return PackageType.EVENT;
   }
+
+  void injectDefaultArgs(String[] args);
 }

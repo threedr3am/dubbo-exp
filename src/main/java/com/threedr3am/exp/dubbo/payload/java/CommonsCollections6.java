@@ -34,6 +34,8 @@ import org.apache.commons.collections.map.LazyMap;
  */
 public class CommonsCollections6 implements Payload {
 
+    private String[] args;
+
     /**
      *
      * @param args
@@ -45,6 +47,8 @@ public class CommonsCollections6 implements Payload {
      */
     @Override
     public Object getPayload(String[] args) throws Exception {
+        if (this.args != null)
+            args = this.args;
         final String[] execArgs = new String[] { args[0] };
 
         final Transformer[] transformers = new Transformer[] {
@@ -106,4 +110,10 @@ public class CommonsCollections6 implements Payload {
 
         return map;
     }
+
+    @Override
+    public void injectDefaultArgs(String[] args) {
+        this.args = args;
+    }
+
 }

