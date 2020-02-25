@@ -12,7 +12,7 @@ usage: java -jar exp.jar [OPTION]
 - -p --protocol <arg>   [dubbo|http] 通讯协议名称，默认缺省dubbo
 - -s --serialization <arg>          [hessian|java] 序列化类型，默认缺省hessian
 - -t --target <arg>          目标，例：127.0.0.1:20880
-- -f --fastcheck <arg>
+- -f --fastcheck <arg>   快速攻击检查（使用预置参数数据文件，遍历所有gadget进行攻击检查），参数为数据文件路径，参考文件check.data
 
 例（快速攻击检测，若不指定序列化类型，则全部gadget都会尝试）：
 ```
