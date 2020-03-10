@@ -27,7 +27,7 @@ public class DubboProtocol implements Protocol {
 
     Payload payload = serialization.getPayload();
     if (isResponse) {
-      header[2] = (byte) ((byte) 0x20 | 3);
+      header[2] = (byte) ((byte) 0x20 | serialization.getType());
       header[3] = 20;
       // set response id.
       Bytes.long2bytes(new Random().nextInt(100000000), header, 4);
