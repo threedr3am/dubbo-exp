@@ -7,7 +7,7 @@ import org.springframework.beans.factory.BeanFactory;
 /**
  * dubbo 默认配置，即hessian2反序列化，都可RCE
  *
- * Spring环境可打，暂时测试Spring-boot打不了（应该是AOP相关类的问题）
+ * todo 感谢 tcsecchen（https://github.com/tcsecchen）的研究并告之，经过修改makeBeanFactoryTriggerBFPA，达到spring通杀
  *
  * <dependency>
  *   <groupId>org.springframework</groupId>
