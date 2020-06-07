@@ -54,7 +54,7 @@ public enum Payloads {
   CommonsCollections11("CommonsCollections11", 1, new CommonsCollections11(), "arg[0]=cmd", "java", "commons-collections:commons-collections:3.2.1", CheckParams.CMD),
   URLDNS("URLDNS", 1, new URLDNS(), "arg[0]=dns server url", "java", "", CheckParams.DNS),
   C3P0("C3P0", 2, new C3P0(), "arg[0]=恶意类所在web服务器ip，例：http://127.0.0.1:8080/，arg[1]=恶意类类名，此处需要恶意类无包名编译出来的", "java", "com.mchange:c3p0:0.9.5.2  com.mchange:mchange-commons-java:0.2.11", CheckParams.CODEBASE),
-  ROME_JAVA("rome", 1, new Rome(), "arg[0]=cmd", "java", "com.rometools:rome:*", CheckParams.CMD),
+  ROME_JAVA("rome_java", 1, new Rome(), "arg[0]=cmd", "java", "com.rometools:rome:*", CheckParams.CMD),
 
   ;
 
