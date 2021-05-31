@@ -14,6 +14,7 @@ import org.apache.dubbo.common.io.Bytes;
  * @author threedr3am
  */
 public class DubboProtocol implements Protocol {
+  private boolean isResponse;
 
   public byte[] makeData(byte[] bytes, Serialization serialization, Map<String, String> extraData) {
     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -25,10 +26,17 @@ public class DubboProtocol implements Protocol {
     // set request and serialization flag.
 
     Payload payload = serialization.getPayload();
-    if (payload == null || payload.getPackageType() == PackageType.EVENT) {
-      header[2] = (byte) ((byte) 0x80 | 0x20 | serialization.getType());
-    } else if (payload.getPackageType() == PackageType.INVOKE) {
-      header[2] = (byte) ((byte) 0x80 | serialization.getType());
+    if (isResponse) {
+      header[2] = (byte) ((byte) 0x20 | serialization.getType());
+      header[3] = 20;
+      // set response id.
+      Bytes.long2bytes(new Random().nextInt(100000000), header, 4);
+    } else {
+      if (payload == null || payload.getPackageType() == PackageType.EVENT) {
+        header[2] = (byte) ((byte) 0x80 | 0x20 | serialization.getType());
+      } else if (payload.getPackageType() == PackageType.INVOKE) {
+        header[2] = (byte) ((byte) 0x80 | serialization.getType());
+      }
     }
 
     // set request id.
@@ -47,6 +55,7 @@ public class DubboProtocol implements Protocol {
 
   @Override
   public Map<String, String> initExtraData(CommandLine cmd) {
+    isResponse = cmd.hasOption("evil");
     return null;
   }
 
