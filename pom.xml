@@ -80,7 +80,7 @@
     <dependency>
       <artifactId>commons-beanutils</artifactId>
       <groupId>commons-beanutils</groupId>
-      <version>1.9.2</version>
+      <version>1.9.4</version>
     </dependency>
 
     <dependency>
