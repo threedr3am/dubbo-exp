@@ -55,7 +55,7 @@ public class DubboProtocol implements Protocol {
 
   @Override
   public Map<String, String> initExtraData(CommandLine cmd) {
-    isResponse = cmd.hasOption("evil");
+    isResponse = cmd.hasOption("dubbo-response") || cmd.hasOption("evil");
     return null;
   }
 

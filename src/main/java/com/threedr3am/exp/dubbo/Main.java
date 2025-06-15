@@ -38,6 +38,7 @@ public class Main {
         .addOption("t", "target", true, "目标，例：-t 127.0.0.1:20880")
         .addOption("s", "serialization", true, "[hessian|java] 序列化类型")
         .addOption("p", "protocol", true, "[dubbo|http] 通讯协议名称，默认缺省dubbo")
+        .addOption("dr", "dubbo-response", false, "当protocol=dubbo时，设置为response模式")
         .addOption("g", "gadget", true, "gadget名称，hessian可选[resin|rome|spring-aop|xbean]，java可选[]")
         .addOption("a", "args", true, "gadget入参，多个参数，需要多个命令传入，例-a http://127.0.0.1:800/ -a Calc")
         .addOption("l", "list", false, "输出所有payload信息")
