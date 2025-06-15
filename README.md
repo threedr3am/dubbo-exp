@@ -36,8 +36,8 @@ usage: java -jar exp.jar [OPTION]
 - target：攻击的目标dubbo provider的ip&port
 - protocol：rpc协议
 - serialization：序列化协议
-- gadget：序列化链
-- args：gadget参数
+- gadget：反序列化利用链
+- args：反序列化利用链参数
 
 ```
 --target
@@ -66,6 +66,13 @@ CommonsCollections8
 /System/Applications/Calculator.app/Contents/MacOS/Calculator
 ```
 #### 3.1.2. 恶意服务-被动攻击（攻击客户端consumer）
+什么意思呢？其实就是起一个恶意的TCP服务，让Dubbo Consumer连接进来交互，返回恶意的序列化数据给Consumer，进而攻击、入侵Consumer！
+- e：表示启动一个恶意的TCP服务
+- evilHost：恶意TCP服务的Host
+- evilPort：恶意TCP服务的port
+- serialization：序列化协议
+- gadget：反序列化利用链
+- args：反序列化利用链参数
 例（使用恶意服务攻击dubbo客户端）：
 ```
 -e
@@ -101,6 +108,8 @@ CommonsCollections8
 ```
 ### 3.2. route攻击（CVE-2021-30181）
 #### 3.2.1. 注入js脚本主动攻击（攻击客户端consumer）
+这个是往注册中心注入恶意地址、脚本，实施对Consumer的攻击！
+
 例（通过在zookeeper注入脚本，实现攻击客户端consumer）：
 ```
 -registry
