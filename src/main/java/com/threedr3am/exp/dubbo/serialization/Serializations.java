@@ -2,6 +2,7 @@ package com.threedr3am.exp.dubbo.serialization;
 
 import com.threedr3am.exp.dubbo.serialization.hessian.HessianSerialization;
 import com.threedr3am.exp.dubbo.serialization.java.JavaSerialization;
+import com.threedr3am.exp.dubbo.serialization.kryo.KryoSerialization;
 
 /**
  * @author threedr3am
@@ -9,6 +10,7 @@ import com.threedr3am.exp.dubbo.serialization.java.JavaSerialization;
 public enum Serializations {
   hessian("hessian", HessianSerialization.class),
   java("java", JavaSerialization.class),
+  kryo("kryo", KryoSerialization.class),
   ;
 
   private String name;

